@@ -1,0 +1,9 @@
+SQL> DELETE FROM PLAYERS WHERE Player_id = 354875;
+DELETE FROM PLAYERS WHERE Player_id = 354875
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (SXC9862.SYS_C00484983) violated - child record 
+found 
+
+
+SQL> spool off;

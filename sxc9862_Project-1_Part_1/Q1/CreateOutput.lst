@@ -1,0 +1,53 @@
+SQL> DESC COUNTRY
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COUNTRY_NAME                              NOT NULL VARCHAR2(20)
+ POPULATION                                NOT NULL NUMBER(10,2)
+ NO_OF_WORLDCUP_WON                        NOT NULL NUMBER(38)
+ MANAGER                                   NOT NULL VARCHAR2(20)
+
+SQL> DESC PLAYERS;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PLAYER_ID                                 NOT NULL NUMBER(38)
+ NAME                                               VARCHAR2(40)
+ FNAME                                              VARCHAR2(20)
+ LNAME                                              VARCHAR2(35)
+ DOB                                                DATE
+ COUNTRY                                            VARCHAR2(20)
+ HEIGHT                                             NUMBER(38)
+ CLUB                                               VARCHAR2(30)
+ POSITION                                           VARCHAR2(10)
+ CAPS_FOR_COUNTRY                                   NUMBER(38)
+ IS_CAPTAIN                                         VARCHAR2(5)
+
+SQL> DESC MATCH_RESULTS;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ MATCH_ID                                  NOT NULL NUMBER(38)
+ DATE_OF_MATCH                                      DATE
+ START_TIME_OF_MATCH                                VARCHAR2(30)
+ TEAM1                                              VARCHAR2(20)
+ TEAM2                                              VARCHAR2(20)
+ TEAM1_SCORE                                        NUMBER(38)
+ TEAM2_SCORE                                        NUMBER(38)
+ STADIUM_NAME                                       VARCHAR2(35)
+ HOST_CITY                                          VARCHAR2(20)
+
+SQL> DESC PLAYER_CARD;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PLAYER_ID                                 NOT NULL NUMBER(38)
+ YELLOW_CARDS                                       NUMBER(38)
+ RED_CARDS                                          NUMBER(38)
+
+SQL> DESC PLAYER_ASSISTS_GOALS;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ PLAYER_ID                                 NOT NULL NUMBER(38)
+ NO_OF_MATCHES                                      NUMBER(38)
+ GOALS                                              NUMBER(38)
+ ASSISTS                                            NUMBER(38)
+ MINUTES_PLAYED                                     NUMBER(38)
+
+SQL> spool off;

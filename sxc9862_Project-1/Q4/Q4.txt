@@ -1,0 +1,6 @@
+Q4) INSERT INTO PLAYERS (Player_id, Name, Fname, Lname, DOB, Country, Height, Club, Position, Caps_for_Country, IS_CAPTAIN)
+VALUES (354875, 'Shivam Kumar', 'Shivam', 'Kumar', '1996/06/05', 'France', 176, 'Arsenal FC', 'Midfielder', 42, 'FALSE');
+INSERT INTO COUNTRY (Country_Name, Population, No_of_Worldcup_won, Manager) 
+VALUES ('India', NULL, 1, 'Suhas Holla');
+INSERT INTO PLAYERS (Player_id, Name, Fname, Lname, DOB, Country, Height, Club, Position, Caps_for_Country, IS_CAPTAIN)
+VALUES (465875, 'Shivam Kumar', 'Shivam', 'Kumar', '1996/06/05', 'India', 176, 'Arsenal FC', 'Midfielder', 42, 'FALSE');

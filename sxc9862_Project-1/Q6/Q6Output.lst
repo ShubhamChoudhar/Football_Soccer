@@ -1,0 +1,24 @@
+SQL> DELETE FROM PLAYERS WHERE Player_id = 354875;
+DELETE FROM PLAYERS WHERE Player_id = 354875
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (SXC9862.SYS_C00484983) violated - child record 
+found 
+
+
+SQL> INSERT INTO PLAYERS (Player_id, Name, Fname, Lname, DOB, Country, Height, Club, Position, Caps_for_Country, IS_CAPTAIN)
+  2  VALUES (453875, 'Shivam Kumar', 'Shivam', 'Kumar', '1996/06/05', 'France', 176, 'Arsenal FC', 'Midfielder', 42, 'FALSE');
+
+1 row created.
+
+SQL> INSERT INTO COUNTRY (Country_Name, Population, No_of_Worldcup_won, Manager)
+  2  VALUES ('India', 1.35, 1, 'Suhas Holla');
+
+1 row created.
+
+SQL> INSERT INTO PLAYER_CARD(Player_id, Yellow_Cards, Red_Cards)
+  2  Values(216071, 2, 1);
+
+1 row created.
+
+SQL> spool off;

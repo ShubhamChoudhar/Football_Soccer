@@ -1,0 +1,30 @@
+Q4)SQL> alter session set nls_date_format ='yyyy/MM/dd';
+
+Session altered.
+
+SQL> INSERT INTO PLAYERS (Player_id, Name, Fname, Lname, DOB, Country, Height, Club, Position, Caps_for_Country, IS_CAPTAIN)
+  2  VALUES (354875, 'Shivam Kumar', 'Shivam', 'Kumar', '1996/06/05', 'France', 176, 'Arsenal FC', 'Midfielder', 42, 'FALSE');
+INSERT INTO PLAYERS (Player_id, Name, Fname, Lname, DOB, Country, Height, Club, Position, Caps_for_Country, IS_CAPTAIN)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (SXC9862.SYS_C00484975) violated 
+
+
+SQL> INSERT INTO COUNTRY (Country_Name, Population, No_of_Worldcup_won, Manager)
+  2  VALUES ('India', NULL, 1, 'Suhas Holla');
+VALUES ('India', NULL, 1, 'Suhas Holla')
+                 *
+ERROR at line 2:
+ORA-01400: cannot insert NULL into ("SXC9862"."COUNTRY"."POPULATION") 
+
+
+SQL> INSERT INTO PLAYERS (Player_id, Name, Fname, Lname, DOB, Country, Height, Club, Position, Caps_for_Country, IS_CAPTAIN)
+  2  VALUES (465875, 'Shivam Kumar', 'Shivam', 'Kumar', '1996/06/05', 'India', 176, 'Arsenal FC', 'Midfielder', 42, 'FALSE');
+INSERT INTO PLAYERS (Player_id, Name, Fname, Lname, DOB, Country, Height, Club, Position, Caps_for_Country, IS_CAPTAIN)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (SXC9862.SYS_C00484976) violated - parent key 
+not found 
+
+
+SQL> spool off;

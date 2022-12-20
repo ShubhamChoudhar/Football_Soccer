@@ -1,0 +1,938 @@
+Q3)
+1)SQL> SELECT NAME, CLUB, COUNTRY
+  2  FROM PLAYERS
+  3  WHERE POSITION = 'Midfielder' AND COUNTRY = 'USA';
+
+NAME                                     CLUB                                   
+---------------------------------------- ------------------------------         
+COUNTRY                                                                         
+--------------------                                                            
+ALEJANDRO BEDOYA                         FC Nantes                              
+USA                                                                             
+                                                                                
+BRAD DAVIS                               Houston Dynamo                         
+USA                                                                             
+                                                                                
+GRAHAM ZUSI                              Sporting Kansas City                   
+USA                                                                             
+                                                                                
+
+NAME                                     CLUB                                   
+---------------------------------------- ------------------------------         
+COUNTRY                                                                         
+--------------------                                                            
+JERMAINE JONES                           Besiktas JK                            
+USA                                                                             
+                                                                                
+JULIAN GREEN                             FC Bayern Muenchen                     
+USA                                                                             
+                                                                                
+KYLE BECKERMAN                           Real Salt Lake                         
+USA                                                                             
+                                                                                
+
+NAME                                     CLUB                                   
+---------------------------------------- ------------------------------         
+COUNTRY                                                                         
+--------------------                                                            
+MICHAEL BRADLEY                          Toronto FC                             
+USA                                                                             
+                                                                                
+MIX DISKERUD                             Rosenborg BK                           
+USA                                                                             
+                                                                                
+
+8 rows selected.
+
+2)SQL> SELECT NAME,COUNTRY, CLUB, trunc(months_between(sysdate,dob)/12) age from PLAYERS WHERE PLAYER_ID = 354875;
+
+NAME                                     COUNTRY                                
+---------------------------------------- --------------------                   
+CLUB                                  AGE                                       
+------------------------------ ----------                                       
+ABDELMOUMENE DJABOU                      Algeria                                
+Club Africain                          35                                       
+                                                                                
+
+3)SQL> SELECT COUNTRY_NAME
+  2  FROM COUNTRY
+  3  WHERE No_of_Worldcup_won > 2;
+
+COUNTRY_NAME                                                                    
+--------------------                                                            
+Brazil                                                                          
+Germany                                                                         
+Italy                                                                           
+
+4)SQL> SELECT COUNTRY_NAME
+  2  FROM COUNTRY
+  3  WHERE No_of_Worldcup_won = 0;
+
+COUNTRY_NAME                                                                    
+--------------------                                                            
+Japan                                                                           
+South Korea                                                                     
+Algeria                                                                         
+Cameroon                                                                        
+Ghana                                                                           
+Ivory Coast                                                                     
+Nigeria                                                                         
+Costa Rica                                                                      
+Honduras                                                                        
+Mexico                                                                          
+USA                                                                             
+
+COUNTRY_NAME                                                                    
+--------------------                                                            
+Chile                                                                           
+Columbia                                                                        
+Ecuador                                                                         
+Belgium                                                                         
+Bosnia & Herzegovina                                                            
+Croatia                                                                         
+Greece                                                                          
+Netherlands                                                                     
+Portugal                                                                        
+Russia                                                                          
+Switzerland                                                                     
+
+COUNTRY_NAME                                                                    
+--------------------                                                            
+Australia                                                                       
+Iran                                                                            
+
+24 rows selected.
+
+5)SQL> SELECT PL.NAME, PL.COUNTRY
+  2  FROM PLAYERS PL, PLAYER_CARD PC
+  3  WHERE (PL.Player_id = PC.Player_id) AND
+  4  (Red_Cards = 0 AND Yellow_Cards = 0);
+
+no rows selected
+
+6)SQL> SELECT pl.NAME, pl.COUNTRY,RED_CARDS
+  2  FROM PLAYERS pl, PLAYER_CARD pc
+  3  WHERE pl.Player_id = pc.Player_id AND
+  4  RED_CARDS = (SELECT MAX(Red_cards) AS COUNT FROM PLAYER_CARD);
+
+NAME                                     COUNTRY               RED_CARDS        
+---------------------------------------- -------------------- ----------        
+ALEXANDRE SONG                           Cameroon                      1        
+ANTE REBIC                               Croatia                       1        
+ANTONIO VALENCIA                         Ecuador                       1        
+CLAUDIO MARCHISIO                        Italy                         1        
+KONSTANTINOS KATSOURANIS                 Greece                        1        
+MAXIMILIANO PEREIRA                      Uruguay                       1        
+OSCAR DUARTE                             Costa Rica                    1        
+PEPE FERREIRA                            Portugal                      1        
+STEVEN DEFOUR                            Belgium                       1        
+WILSON PALACIOS                          Honduras                      1        
+
+10 rows selected.
+
+7)SQL> SELECT DISTINCT HOST_CITY, COUNT(Match_id) AS TOTAL_MATCHES FROM MATCH_RESULTS GROUP BY HOST_CITY ORDER BY TOTAL_MATCHES ASC;
+
+HOST_CITY            TOTAL_MATCHES                                              
+-------------------- -------------                                              
+Cuiaba                           4                                              
+Curitiba                         4                                              
+Natal                            4                                              
+Manaus                           4                                              
+Recife                           5                                              
+Porto Alegre                     5                                              
+Belo Horizonte                   6                                              
+Fortaleza                        6                                              
+Salvador                         6                                              
+Sao Paulo                        6                                              
+Rio De Janerio                   7                                              
+
+HOST_CITY            TOTAL_MATCHES                                              
+-------------------- -------------                                              
+Brasilia                         7                                              
+
+12 rows selected.
+
+8)SQL> SELECT Host_City FROM (SELECT DISTINCT HOST_CITY, COUNT(Match_id) AS TOTAL FROM MATCH_RESULTS GROUP BY HOST_CITY)
+  2  WHERE TOTAL = (SELECT MAX(TOTAL) FROM (SELECT DISTINCT HOST_CITY, COUNT(Match_id) AS TOTAL FROM MATCH_RESULTS GROUP BY HOST_CITY));
+
+HOST_CITY                                                                       
+--------------------                                                            
+Brasilia                                                                        
+Rio De Janerio                                                                  
+
+9)SQL> SELECT DISTINCT TEAM1, COUNT(MATCH_ID) AS MATCH_COUNT, SUM(TEAM1_SCORE) AS TOTAL_T1_GOALS, SUM(TEAM2_SCORE) AS TOTAL_T2_GOALS
+  2  FROM MATCH_RESULTS
+  3  GROUP BY TEAM1;
+
+TEAM1                MATCH_COUNT TOTAL_T1_GOALS TOTAL_T2_GOALS                  
+-------------------- ----------- -------------- --------------                  
+Brazil                         6              7             13                  
+Columbia                       3              7              1                  
+Argentina                      4              5              1                  
+South Korea                    2              2              5                  
+Croatia                        1              1              3                  
+Costa Rica                     2              1              1                  
+Spain                          2              1              7                  
+Iran                           1              0              0                  
+Russia                         1              1              1                  
+Japan                          2              1              4                  
+Italy                          2              0              2                  
+
+TEAM1                MATCH_COUNT TOTAL_T1_GOALS TOTAL_T2_GOALS                  
+-------------------- ----------- -------------- --------------                  
+Netherlands                    4              4              1                  
+Bosnia & Herzegovina           1              3              1                  
+Algeria                        1              1              1                  
+Chile                          1              3              1                  
+Ivory Coast                    1              2              1                  
+England                        1              1              2                  
+France                         3              5              1                  
+Germany                        4              9              3                  
+Ghana                          1              1              2                  
+Honduras                       2              1              5                  
+Portugal                       1              2              1                  
+
+TEAM1                MATCH_COUNT TOTAL_T1_GOALS TOTAL_T2_GOALS                  
+-------------------- ----------- -------------- --------------                  
+Mexico                         1              1              0                  
+Uruguay                        2              3              4                  
+Cameroon                       2              1              8                  
+Australia                      2              2              6                  
+USA                            2              2              3                  
+Belgium                        3              5              2                  
+Ecuador                        1              0              0                  
+Switzerland                    2              4              6                  
+Nigeria                        2              3              3                  
+Greece                         1              2              1                  
+
+32 rows selected.
+
+10)SQL> SELECT DISTINCT TEAM2, COUNT(MATCH_ID) AS MATCH_COUNT, SUM(TEAM2_SCORE) AS TOTAL_T2_GOALS, SUM(TEAM1_SCORE) AS TOTAL_T1_GOALS
+  2  FROM MATCH_RESULTS
+  3  GROUP BY TEAM2;
+
+TEAM2                MATCH_COUNT TOTAL_T2_GOALS TOTAL_T1_GOALS                  
+-------------------- ----------- -------------- --------------                  
+Croatia                        2              5              3                  
+Costa Rica                     3              4              1                  
+South Korea                    1              1              1                  
+Brazil                         1              4              1                  
+Columbia                       2              5              3                  
+Argentina                      3              3              3                  
+Netherlands                    3             11              3                  
+Japan                          1              1              2                  
+Italy                          1              2              1                  
+Bosnia & Herzegovina           2              1              3                  
+Algeria                        3              6              6                  
+
+TEAM2                MATCH_COUNT TOTAL_T2_GOALS TOTAL_T1_GOALS                  
+-------------------- ----------- -------------- --------------                  
+Iran                           2              1              4                  
+Russia                         2              1              2                  
+Spain                          1              3              0                  
+Honduras                       1              0              3                  
+Portugal                       2              2              6                  
+Chile                          3              3              3                  
+Ivory Coast                    2              2              4                  
+England                        2              1              2                  
+France                         2              5              2                  
+Ghana                          2              3              4                  
+Germany                        3              9              1                  
+
+TEAM2                MATCH_COUNT TOTAL_T2_GOALS TOTAL_T1_GOALS                  
+-------------------- ----------- -------------- --------------                  
+Mexico                         3              4              3                  
+Uruguay                        2              1              2                  
+Cameroon                       1              0              1                  
+Australia                      1              1              3                  
+USA                            2              3              3                  
+Ecuador                        2              3              3                  
+Belgium                        2              1              1                  
+Greece                         3              1              4                  
+Nigeria                        2              0              2                  
+Switzerland                    2              3              1                  
+
+32 rows selected.
+
+11)SQL> CREATE OR REPLACE VIEW "TEAM_SUMMARY" AS
+  2  SELECT DISTINCT TEAM1 AS CountryName, COUNT(MATCH_ID) AS NoofGames, SUM(TEAM1_SCORE) AS TotalGoalsfor, SUM(TEAM2_SCORE) AS TotalGoalsAgainst
+  3  FROM MATCH_RESULTS
+  4  GROUP BY TEAM1
+  5  UNION ALL
+  6  SELECT DISTINCT TEAM2 AS CountryName, COUNT(MATCH_ID) AS NoofGames, SUM(TEAM2_SCORE) AS TotalGoalsfor, SUM(TEAM1_SCORE) AS TotalGoalsAgainst
+  7  FROM MATCH_RESULTS
+  8  GROUP BY TEAM2;
+
+View created.
+
+SQL> SELECT DISTINCT TEAM1 AS CountryName, COUNT(MATCH_ID) AS NoofGames, SUM(TEAM1_SCORE) AS TotalGoalsfor, SUM(TEAM2_SCORE) AS TotalGoalsAgainst
+  2  FROM MATCH_RESULTS
+  3  GROUP BY TEAM1
+  4  UNION ALL
+  5  SELECT DISTINCT TEAM2 AS CountryName, COUNT(MATCH_ID) AS NoofGames, SUM(TEAM2_SCORE) AS TotalGoalsfor, SUM(TEAM1_SCORE) AS TotalGoalsAgainst
+  6  FROM MATCH_RESULTS
+  7  GROUP BY TEAM2;
+
+COUNTRYNAME           NOOFGAMES TOTALGOALSFOR TOTALGOALSAGAINST                 
+-------------------- ---------- ------------- -----------------                 
+Brazil                        6             7                13                 
+Columbia                      3             7                 1                 
+Argentina                     4             5                 1                 
+South Korea                   2             2                 5                 
+Croatia                       1             1                 3                 
+Costa Rica                    2             1                 1                 
+Spain                         2             1                 7                 
+Iran                          1             0                 0                 
+Russia                        1             1                 1                 
+Japan                         2             1                 4                 
+Italy                         2             0                 2                 
+
+COUNTRYNAME           NOOFGAMES TOTALGOALSFOR TOTALGOALSAGAINST                 
+-------------------- ---------- ------------- -----------------                 
+Netherlands                   4             4                 1                 
+Bosnia & Herzegovina          1             3                 1                 
+Algeria                       1             1                 1                 
+Chile                         1             3                 1                 
+Ivory Coast                   1             2                 1                 
+England                       1             1                 2                 
+France                        3             5                 1                 
+Germany                       4             9                 3                 
+Ghana                         1             1                 2                 
+Honduras                      2             1                 5                 
+Portugal                      1             2                 1                 
+
+COUNTRYNAME           NOOFGAMES TOTALGOALSFOR TOTALGOALSAGAINST                 
+-------------------- ---------- ------------- -----------------                 
+Mexico                        1             1                 0                 
+Uruguay                       2             3                 4                 
+Cameroon                      2             1                 8                 
+Australia                     2             2                 6                 
+USA                           2             2                 3                 
+Belgium                       3             5                 2                 
+Ecuador                       1             0                 0                 
+Switzerland                   2             4                 6                 
+Nigeria                       2             3                 3                 
+Greece                        1             2                 1                 
+Croatia                       2             5                 3                 
+
+COUNTRYNAME           NOOFGAMES TOTALGOALSFOR TOTALGOALSAGAINST                 
+-------------------- ---------- ------------- -----------------                 
+Costa Rica                    3             4                 1                 
+South Korea                   1             1                 1                 
+Brazil                        1             4                 1                 
+Columbia                      2             5                 3                 
+Argentina                     3             3                 3                 
+Netherlands                   3            11                 3                 
+Japan                         1             1                 2                 
+Italy                         1             2                 1                 
+Bosnia & Herzegovina          2             1                 3                 
+Algeria                       3             6                 6                 
+Iran                          2             1                 4                 
+
+COUNTRYNAME           NOOFGAMES TOTALGOALSFOR TOTALGOALSAGAINST                 
+-------------------- ---------- ------------- -----------------                 
+Russia                        2             1                 2                 
+Spain                         1             3                 0                 
+Honduras                      1             0                 3                 
+Portugal                      2             2                 6                 
+Chile                         3             3                 3                 
+Ivory Coast                   2             2                 4                 
+England                       2             1                 2                 
+France                        2             5                 2                 
+Ghana                         2             3                 4                 
+Germany                       3             9                 1                 
+Mexico                        3             4                 3                 
+
+COUNTRYNAME           NOOFGAMES TOTALGOALSFOR TOTALGOALSAGAINST                 
+-------------------- ---------- ------------- -----------------                 
+Uruguay                       2             1                 2                 
+Cameroon                      1             0                 1                 
+Australia                     1             1                 3                 
+USA                           2             3                 3                 
+Ecuador                       2             3                 3                 
+Belgium                       2             1                 1                 
+Greece                        3             1                 4                 
+Nigeria                       2             0                 2                 
+Switzerland                   2             3                 1                 
+
+64 rows selected.
+
+SQL> SELECT CountryName, SUM(NoofGames) AS TotalNoofGames, SUM(TotalGoalsfor) AS TotalGoalsScored, SUM(TotalGoalsAgainst) AS TotalGoalsAgainst
+  2  FROM TEAM_SUMMARY
+  3  GROUP BY CountryName
+  4  ORDER BY TotalNoofGames DESC;
+
+COUNTRYNAME          TOTALNOOFGAMES TOTALGOALSSCORED TOTALGOALSAGAINST          
+-------------------- -------------- ---------------- -----------------          
+Brazil                            7               11                14          
+Argentina                         7                8                 4          
+Germany                           7               18                 4          
+Netherlands                       7               15                 4          
+Columbia                          5               12                 4          
+Belgium                           5                6                 3          
+Costa Rica                        5                5                 2          
+France                            5               10                 3          
+Nigeria                           4                3                 5          
+Greece                            4                3                 5          
+Switzerland                       4                7                 7          
+
+COUNTRYNAME          TOTALNOOFGAMES TOTALGOALSSCORED TOTALGOALSAGAINST          
+-------------------- -------------- ---------------- -----------------          
+USA                               4                5                 6          
+Uruguay                           4                4                 6          
+Mexico                            4                5                 3          
+Chile                             4                6                 4          
+Algeria                           4                7                 7          
+England                           3                2                 4          
+Russia                            3                2                 3          
+Croatia                           3                6                 6          
+Ghana                             3                4                 6          
+Honduras                          3                1                 8          
+Portugal                          3                4                 7          
+
+COUNTRYNAME          TOTALNOOFGAMES TOTALGOALSSCORED TOTALGOALSAGAINST          
+-------------------- -------------- ---------------- -----------------          
+Ecuador                           3                3                 3          
+South Korea                       3                3                 6          
+Ivory Coast                       3                4                 5          
+Australia                         3                3                 9          
+Cameroon                          3                1                 9          
+Bosnia & Herzegovina              3                4                 4          
+Iran                              3                1                 4          
+Italy                             3                2                 3          
+Japan                             3                2                 6          
+Spain                             3                4                 7          
+
+32 rows selected.
+
+12)SQL> SELECT Date_of_Match, Team1, Team2, TEAM1 AS WinningTeam, (TEAM1_SCORE - TEAM2_SCORE) AS GoalDifference
+  2  FROM MATCH_RESULTS
+  3  WHERE TEAM1_SCORE - TEAM2_SCORE > 0
+  4  UNION ALL
+  5  SELECT Date_of_Match, Team1, Team2, TEAM2 AS WinningTeam, (TEAM2_SCORE - TEAM1_SCORE) AS GoalDifference
+  6  FROM MATCH_RESULTS
+  7  WHERE TEAM2_SCORE - TEAM1_SCORE > 0;
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+12-JUN-14 Brazil               Croatia              Brazil                      
+             2                                                                  
+                                                                                
+13-JUN-14 Mexico               Cameroon             Mexico                      
+             1                                                                  
+                                                                                
+13-JUN-14 Chile                Australia            Chile                       
+             2                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+14-JUN-14 Columbia             Greece               Columbia                    
+             3                                                                  
+                                                                                
+14-JUN-14 Ivory Coast          Japan                Ivory Coast                 
+             1                                                                  
+                                                                                
+15-JUN-14 Switzerland          Ecuador              Switzerland                 
+             1                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+15-JUN-14 France               Honduras             France                      
+             3                                                                  
+                                                                                
+15-JUN-14 Argentina            Bosnia & Herzegovina Argentina                   
+             1                                                                  
+                                                                                
+16-JUN-14 Germany              Portugal             Germany                     
+             4                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+17-JUN-14 Belgium              Algeria              Belgium                     
+             1                                                                  
+                                                                                
+19-JUN-14 Columbia             Ivory Coast          Columbia                    
+             1                                                                  
+                                                                                
+19-JUN-14 Uruguay              England              Uruguay                     
+             1                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+21-JUN-14 Argentina            Iran                 Argentina                   
+             1                                                                  
+                                                                                
+21-JUN-14 Nigeria              Bosnia & Herzegovina Nigeria                     
+             1                                                                  
+                                                                                
+22-JUN-14 Belgium              Russia               Belgium                     
+             1                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+23-JUN-14 Netherlands          Chile                Netherlands                 
+             2                                                                  
+                                                                                
+24-JUN-14 Greece               Ivory Coast          Greece                      
+             1                                                                  
+                                                                                
+25-JUN-14 Bosnia & Herzegovina Iran                 Bosnia & Herzegovina        
+             2                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+26-JUN-14 Portugal             Ghana                Portugal                    
+             1                                                                  
+                                                                                
+28-JUN-14 Columbia             Uruguay              Columbia                    
+             2                                                                  
+                                                                                
+29-JUN-14 Netherlands          Mexico               Netherlands                 
+             1                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+30-JUN-14 France               Nigeria              France                      
+             2                                                                  
+                                                                                
+30-JUN-14 Germany              Algeria              Germany                     
+             1                                                                  
+                                                                                
+01-JUL-14 Argentina            Switzerland          Argentina                   
+             1                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+01-JUL-14 Belgium              USA                  Belgium                     
+             1                                                                  
+                                                                                
+04-JUL-14 Brazil               Columbia             Brazil                      
+             1                                                                  
+                                                                                
+05-JUL-14 Argentina            Belgium              Argentina                   
+             1                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+13-JUL-14 Germany              Argentina            Germany                     
+             1                                                                  
+                                                                                
+13-JUN-14 Spain                Netherlands          Netherlands                 
+             4                                                                  
+                                                                                
+14-JUN-14 Uruguay              Costa Rica           Costa Rica                  
+             2                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+14-JUN-14 England              Italy                Italy                       
+             1                                                                  
+                                                                                
+16-JUN-14 Ghana                USA                  USA                         
+             1                                                                  
+                                                                                
+18-JUN-14 Cameroon             Croatia              Croatia                     
+             4                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+18-JUN-14 Spain                Chile                Chile                       
+             2                                                                  
+                                                                                
+18-JUN-14 Australia            Netherlands          Netherlands                 
+             1                                                                  
+                                                                                
+20-JUN-14 Italy                Costa Rica           Costa Rica                  
+             1                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+20-JUN-14 Switzerland          France               France                      
+             3                                                                  
+                                                                                
+20-JUN-14 Honduras             Ecuador              Ecuador                     
+             1                                                                  
+                                                                                
+22-JUN-14 South Korea          Algeria              Algeria                     
+             2                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+23-JUN-14 Cameroon             Brazil               Brazil                      
+             3                                                                  
+                                                                                
+23-JUN-14 Croatia              Mexico               Mexico                      
+             2                                                                  
+                                                                                
+23-JUN-14 Australia            Spain                Spain                       
+             3                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+24-JUN-14 Japan                Columbia             Columbia                    
+             3                                                                  
+                                                                                
+24-JUN-14 Italy                Uruguay              Uruguay                     
+             1                                                                  
+                                                                                
+25-JUN-14 Honduras             Switzerland          Switzerland                 
+             3                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+25-JUN-14 Nigeria              Argentina            Argentina                   
+             1                                                                  
+                                                                                
+26-JUN-14 USA                  Germany              Germany                     
+             1                                                                  
+                                                                                
+26-JUN-14 South Korea          Belgium              Belgium                     
+             1                                                                  
+                                                                                
+
+DATE_OF_M TEAM1                TEAM2                WINNINGTEAM                 
+--------- -------------------- -------------------- --------------------        
+GOALDIFFERENCE                                                                  
+--------------                                                                  
+04-JUL-14 France               Germany              Germany                     
+             1                                                                  
+                                                                                
+08-JUL-14 Brazil               Germany              Germany                     
+             6                                                                  
+                                                                                
+12-JUL-14 Brazil               Netherlands          Netherlands                 
+             3                                                                  
+                                                                                
+
+51 rows selected.
+
+13)SQL> SELECT *
+  2  FROM MATCH_RESULTS
+  3  WHERE Team1 = 'Brazil' OR TEAM2 = 'Brazil';
+
+  MATCH_ID DATE_OF_M START_TIME_OF_MATCH  TEAM1                                 
+---------- --------- -------------------- --------------------                  
+TEAM2                TEAM1_SCORE TEAM2_SCORE STADIUM_NAME                       
+-------------------- ----------- ----------- -----------------------------------
+HOST_CITY                                                                       
+--------------------                                                            
+         1 12-JUN-14 17:00:00             Brazil                                
+Croatia                        3           1 Arena de Sao Paulo                 
+Sao Paulo                                                                       
+                                                                                
+        17 17-JUN-14 16:00:00             Brazil                                
+Mexico                         0           0 Estadio Castelao                   
+Fortaleza                                                                       
+
+  MATCH_ID DATE_OF_M START_TIME_OF_MATCH  TEAM1                                 
+---------- --------- -------------------- --------------------                  
+TEAM2                TEAM1_SCORE TEAM2_SCORE STADIUM_NAME                       
+-------------------- ----------- ----------- -----------------------------------
+HOST_CITY                                                                       
+--------------------                                                            
+                                                                                
+        33 23-JUN-14 17:00:00             Cameroon                              
+Brazil                         1           4 Estadio Nacional                   
+Brasilia                                                                        
+                                                                                
+        49 28-JUN-14 13:00:00             Brazil                                
+Chile                          1           1 Estadio Mineirao                   
+
+  MATCH_ID DATE_OF_M START_TIME_OF_MATCH  TEAM1                                 
+---------- --------- -------------------- --------------------                  
+TEAM2                TEAM1_SCORE TEAM2_SCORE STADIUM_NAME                       
+-------------------- ----------- ----------- -----------------------------------
+HOST_CITY                                                                       
+--------------------                                                            
+Belo Horizonte                                                                  
+                                                                                
+        57 04-JUL-14 17:00:00             Brazil                                
+Columbia                       2           1 Estadio Castelao                   
+Fortaleza                                                                       
+                                                                                
+        61 08-JUL-14 17:00:00             Brazil                                
+
+  MATCH_ID DATE_OF_M START_TIME_OF_MATCH  TEAM1                                 
+---------- --------- -------------------- --------------------                  
+TEAM2                TEAM1_SCORE TEAM2_SCORE STADIUM_NAME                       
+-------------------- ----------- ----------- -----------------------------------
+HOST_CITY                                                                       
+--------------------                                                            
+Germany                        1           7 Estadio Mineirao                   
+Belo Horizonte                                                                  
+                                                                                
+        63 12-JUL-14 17:00:00             Brazil                                
+Netherlands                    0           3 Estadio Nacional                   
+Brasilia                                                                        
+                                                                                
+
+7 rows selected.
+
+14)SQL> SELECT P.NAME, P.COUNTRY, PG.GOALS FROM PLAYERS P, PLAYER_ASSISTS_GOALS PG
+  2  WHERE PG.PLAYER_ID= P.PLAYER_ID AND PG.GOALS > 0
+  3  ORDER BY PG.GOALS DESC;
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+JAMES RODRIGUEZ                          Columbia                      6        
+THOMAS MUELLER                           Germany                       5        
+ROBIN VAN PERSIE                         Netherlands                   4        
+NEYMAR SANTOS JR.                        Brazil                        4        
+LIONEL MESSI                             Argentina                     4        
+KARIM BENZEMA                            France                        3        
+XHERDAN SHAQIRI                          Switzerland                   3        
+ENNER VALENCIA                           Ecuador                       3        
+ARJEN ROBBEN                             Netherlands                   3        
+ANDRE SCHUERRLE                          Germany                       3        
+JACKSON MARTINEZ                         Columbia                      2        
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+LUIS SUAREZ                              Uruguay                       2        
+MARIO GOETZE                             Germany                       2        
+MARIO MANDZUKIC                          Croatia                       2        
+MATS HUMMELS                             Germany                       2        
+MEMPHIS DEPAY                            Netherlands                   2        
+MIROSLAV KLOSE                           Germany                       2        
+OSCAR DOS SANTOS JR.                     Brazil                        2        
+TIM CAHILL                               Australia                     2        
+TONI KROOS                               Germany                       2        
+WILFRIED BONY                            Ivory Coast                   2        
+IVAN PERISIC                             Croatia                       2        
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+ISLAM SLIMANI                            Algeria                       2        
+GERVINHO YAO KOUASSI                     Ivory Coast                   2        
+DAVID LUIZ                               Brazil                        2        
+CLINT DEMPSEY                            USA                           2        
+BRYAN RUIZ                               Costa Rica                    2        
+ASAMOAH GYAN                             Ghana                         2        
+ANDRE AYEW                               Ghana                         2        
+ALEXIS SANCHEZ                           Chile                         2        
+ABDELMOUMENE DJABOU                      Algeria                       2        
+AHMED MUSA                               Nigeria                       2        
+ADMIR MEHMEDI                            Switzerland                   1        
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+ALEKSANDR KERZHAKOV                      Russia                        1        
+ALEXANDER KOKORIN                        Russia                        1        
+ANDREAS SAMARIS                          Greece                        1        
+ANDRES GUARDADO                          Mexico                        1        
+ANGEL DI MARIA                           Argentina                     1        
+BLAISE MATUIDI                           France                        1        
+BLERIM DZEMAILI                          Switzerland                   1        
+CARLO COSTLY                             Honduras                      1        
+CHARLES ARANGUIZ                         Chile                         1        
+CLAUDIO MARCHISIO                        Italy                         1        
+CRISTIANO RONALDO                        Portugal                      1        
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+DALEY BLIND                              Netherlands                   1        
+DANIEL STURRIDGE                         England                       1        
+DAVID VILLA                              Spain                         1        
+DIEGO GODIN                              Uruguay                       1        
+DIVOCK ORIGI                             Belgium                       1        
+DRIES MERTENS                            Belgium                       1        
+EDIN DZEKO                               Bosnia & Herzegovina          1        
+EDINSON CAVANI                           Uruguay                       1        
+EDUARDO VARGAS                           Chile                         1        
+FERNANDINHO LUIZ ROZA                    Brazil                        1        
+FERNANDO TORRES                          Spain                         1        
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+FRED CHAVES GUEDES                       Brazil                        1        
+GEORGINIO WIJNALDUM                      Netherlands                   1        
+GEORGIOS SAMARAS                         Greece                        1        
+GIOVANI DOS SANTOS                       Mexico                        1        
+GONZALO HIGUAIN                          Argentina                     1        
+GRANIT XHAKA                             Switzerland                   1        
+HARIS SEFEROVIC                          Switzerland                   1        
+IVICA OLIC                               Croatia                       1        
+JAN VERTONGHEN                           Belgium                       1        
+JAVIER HERNANDEZ                         Mexico                        1        
+JEAN BEAUSEJOUR                          Chile                         1        
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+JERMAINE JONES                           USA                           1        
+JOEL CAMPBELL                            Costa Rica                    1        
+JOEL MATIP                               Cameroon                      1        
+JOHN BROOKS                              USA                           1        
+JORGE VALDIVIA                           Chile                         1        
+JUAN CUADRADO                            Columbia                      1        
+JUAN MATA                                Spain                         1        
+JUAN QUINTERO                            Columbia                      1        
+JULIAN GREEN                             USA                           1        
+KEISUKE HONDA                            Japan                         1        
+KEVIN DE BRUYNE                          Belgium                       1        
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+KLAAS JAN HUNTELAAR                      Netherlands                   1        
+KOO JACHEOL                              South Korea                   1        
+LEE KEUNHO                               South Korea                   1        
+LEROY FER                                Netherlands                   1        
+MARCOS ROJO                              Argentina                     1        
+MARCOS URENA                             Costa Rica                    1        
+MARIO BALOTELLI                          Italy                         1        
+MAROUANE FELLAINI                        Belgium                       1        
+MATHIEU VALBUENA                         France                        1        
+MESUT OEZIL                              Germany                       1        
+MILE JEDINAK                             Australia                     1        
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+MIRALEM PJANIC                           Bosnia & Herzegovina          1        
+MOUSSA SISSOKO                           France                        1        
+NANI DA CUNHA                            Portugal                      1        
+OLIVIER GIROUD                           France                        1        
+ORIBE PERALTA                            Mexico                        1        
+OSCAR DUARTE                             Costa Rica                    1        
+PABLO ARMERO                             Columbia                      1        
+PAUL POGBA                               France                        1        
+PETER ODEMWINGIE                         Nigeria                       1        
+RAFAEL MARQUEZ                           Mexico                        1        
+OGNJEN VRANJES                           Bosnia & Herzegovina          1        
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+RAFIK HALLICHE                           Algeria                       1        
+REZA GHOOCHANNEJAD                       Iran                          1        
+ROMELU LUKAKU                            Belgium                       1        
+SAMI KHEDIRA                             Germany                       1        
+SHINJI OKAZAKI                           Japan                         1        
+SOFIANE FEGHOULI                         Algeria                       1        
+SOKRATIS PAPASTATHOPOULOS                Greece                        1        
+SON HEUNGMIN                             South Korea                   1        
+STEFAN DE VRIJ                           Netherlands                   1        
+TEOFILO GUTIERREZ                        Columbia                      1        
+THIAGO SILVA                             Brazil                        1        
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+VARELA SILVESTRE                         Portugal                      1        
+VEDAD IBISEVIC                           Bosnia & Herzegovina          1        
+WAYNE ROONEY                             England                       1        
+WESLEY SNEIJDER                          Netherlands                   1        
+XABI ALONSO                              Spain                         1        
+YACINE BRAHIMI                           Algeria                       1        
+
+116 rows selected.
+
+15)SQL> SELECT P.NAME, P.COUNTRY, PG.GOALS FROM PLAYERS P, PLAYER_ASSISTS_GOALS PG
+  2  WHERE PG.PLAYER_ID= P.PLAYER_ID AND PG.GOALS > 2
+  3  ORDER BY PG.GOALS DESC;
+
+NAME                                     COUNTRY                   GOALS        
+---------------------------------------- -------------------- ----------        
+JAMES RODRIGUEZ                          Columbia                      6        
+THOMAS MUELLER                           Germany                       5        
+ROBIN VAN PERSIE                         Netherlands                   4        
+NEYMAR SANTOS JR.                        Brazil                        4        
+LIONEL MESSI                             Argentina                     4        
+XHERDAN SHAQIRI                          Switzerland                   3        
+ENNER VALENCIA                           Ecuador                       3        
+ARJEN ROBBEN                             Netherlands                   3        
+ANDRE SCHUERRLE                          Germany                       3        
+KARIM BENZEMA                            France                        3        
+
+10 rows selected.
+
+16)SQL> SELECT Country_Name, Population FROM COUNTRY
+  2  ORDER BY Population DESC;
+
+COUNTRY_NAME         POPULATION                                                 
+-------------------- ----------                                                 
+USA                       318.9                                                 
+Brazil                    202.4                                                 
+Nigeria                   173.6                                                 
+Russia                   142.46                                                 
+Japan                    127.06                                                 
+Mexico                    122.3                                                 
+Germany                    82.6                                                 
+Iran                      77.97                                                 
+France                     64.6                                                 
+Italy                     61.07                                                 
+England                    53.5                                                 
+
+COUNTRY_NAME         POPULATION                                                 
+-------------------- ----------                                                 
+South Korea               50.42                                                 
+Columbia                  49.14                                                 
+Spain                      47.1                                                 
+Argentina                  42.3                                                 
+Algeria                    39.9                                                 
+Ghana                      25.9                                                 
+Australia                 23.59                                                 
+Cameroon                  23.03                                                 
+Ivory Coast               20.32                                                 
+Chile                     17.62                                                 
+Netherlands                16.9                                                 
+
+COUNTRY_NAME         POPULATION                                                 
+-------------------- ----------                                                 
+Ecuador                   15.98                                                 
+Greece                     11.2                                                 
+Belgium                    11.2                                                 
+Portugal                  10.58                                                 
+Honduras                   8.09                                                 
+Switzerland                   8                                                 
+Costa Rica                 4.87                                                 
+Croatia                    4.25                                                 
+Bosnia & Herzegovina       3.83                                                 
+Uruguay                    3.42                                                 
+
+32 rows selected.
+
+SQL> spool off;
